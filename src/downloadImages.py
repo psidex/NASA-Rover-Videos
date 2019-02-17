@@ -14,7 +14,6 @@ def fromOppLeftHZCM(imageName):
     """
     Detect if image is from Opportunity's left Forward HAZCAM
     """
-    imageName = imageName.replace(".JPG", "")  # Remove .JPG if its there
     if imageName[0] == "1" and imageName[1] == "F" and imageName[23] == "L":
         return True
     return False
@@ -24,7 +23,6 @@ def isFullFrame(imageName):
     """
     Detect if image is "Full Frame"
     """
-    imageName = imageName.replace(".JPG", "")
     if imageName[11:14] == "EFF":
         return True
     return False
