@@ -15,3 +15,7 @@ I wrote [downloadImages.py](src/downloadImages.py) which does what I described a
 Now that I have all the images, I can just use cv2 to compile these all into one video, using [createVideo.py](src/createVideo.py)
 
 [The final result](https://youtu.be/rtP6iYhFuqQ)
+
+## TOOD
+
+The downloadImages script only downloads 1 image from each sol, sometimes there are multiple
