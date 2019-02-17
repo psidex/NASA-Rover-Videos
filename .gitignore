@@ -105,5 +105,5 @@ venv.bak/
 
 # Oppys Journey
 src/links.txt
-src/output.avi
+src/*.avi
 src/oppyImages/*.jpg

@@ -52,7 +52,6 @@ for imgLink in imgLinks:
                 filename = currentURL.split("/")[-1]
                 sol = currentURL.split("/")[2]
                 timestamp = filename[2:11]
-                print(filename, timestamp)
                 newFilename = f"{sol}-{timestamp}"
 
                 if fromOppLeftHZCM(filename) and isFullFrame(filename):

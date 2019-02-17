@@ -8,7 +8,7 @@ import os
 
 frameRate = 15
 imageDir = "oppyImages"
-videoName = "output.avi"
+videoName = f"journey-{frameRate}fps.avi"
 
 images = natsorted([img for img in os.listdir(imageDir) if img.endswith(".jpg")])
 frame = cv2.imread(os.path.join(imageDir, images[0]))
