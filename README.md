@@ -18,6 +18,6 @@ Now that I have all the images, I can just use cv2 to compile these all into one
 
 A similar video can be made from images taken by the rear left HAZCAM (with small changes to the getLinks and downloadImages scripts)
 
-[You can see that video here]()
+[You can see that video here](https://youtu.be/lcdB9VeV08Q)
 
 Read the description of each video for more info
