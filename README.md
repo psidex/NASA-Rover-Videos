@@ -1,6 +1,6 @@
 # Opportunitys-Journey
 
-How I created my "Opportunity's Journey" video
+How I created my "Opportunity's Journey" video - just some quite notes for anyone interested
 
 ## Steps
 
