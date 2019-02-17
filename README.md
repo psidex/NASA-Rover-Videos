@@ -20,4 +20,8 @@ A similar video can be made from images taken by the rear left HAZCAM (with smal
 
 [You can see that video here](https://youtu.be/lcdB9VeV08Q)
 
+Another similar video can be made for Spirits journey
+
+[You can see that video here](https://youtu.be/2BNyX0kwEcE)
+
 Read the description of each video for more info
