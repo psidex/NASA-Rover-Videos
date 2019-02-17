@@ -51,18 +51,21 @@ for imgLink in imgLinks:
 
                 filename = currentURL.split("/")[-1]
                 sol = currentURL.split("/")[2]
+                timestamp = filename[2:11]
+                print(filename, timestamp)
+                newFilename = f"{sol}-{timestamp}"
 
                 if fromOppLeftHZCM(filename) and isFullFrame(filename):
 
-                    print(sol)
-                    if os.path.isfile(f"oppyImages/{sol}.jpg"):
+                    print(f"Found image from sol {newFilename}")
+                    if os.path.isfile(f"oppyImages/{newFilename}.jpg"):
                         continue
 
                     rawImgURL = getRawImageURL(currentURL)
                     rawImg = session.get(rawImgURL).content
                     print(currentURL, "downloaded")
 
-                    with open(f"oppyImages/{sol}.jpg", "wb") as imageOut:
+                    with open(f"oppyImages/{newFilename}.jpg", "wb") as imageOut:
                         imageOut.write(rawImg)
 
         except KeyError:
