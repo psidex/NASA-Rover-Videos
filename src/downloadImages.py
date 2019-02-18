@@ -1,22 +1,32 @@
 """
-Using links.txt, scrape and download all of Opportunity's images that are:
-- From the left facing HAZCAM
-- Full frame
+Scrape NASAs {roverName} gallery page and get all the URLs for images from each sol
 
-Helper functions used info from https://mars.nasa.gov/mer/gallery/edr_filename_key.html
+Using this list of links, scrape and download all of {roverName}s images that fulfill
+the variables below
+
+Helper functions use info from https://mars.nasa.gov/mer/gallery/edr_filename_key.html
 """
 
 from requests_html import HTMLSession
 import os
 
-imageDir = "oppyImages"
+# Variables to change
+imageDir = "roverImages"
+roverName = "opportunity"  # opportunity or spirit
+cameraPos = "f"  # f for front or r for rear (Hazcam position)
+cameraSide = "l"  # l for left, r for right (Hazcam side)
+# - - - - - - - - - -
 
 
-def fromOppLeftHZCM(imageName):
+def fromCorrectCamera(imageName):
     """
-    Detect if image is from Opportunity's left Forward HAZCAM
+    Detect if image is from {roverName}s {cameraSide} {cameraPos} Hazcam
     """
-    if imageName[0] == "1" and imageName[1] == "F" and imageName[23] == "L":
+    if (
+        imageName[0] == ("1" if roverName == "opportunity" else "2")
+        and imageName[1] == cameraPos.upper()
+        and imageName[23] == cameraSide.upper()
+    ):
         return True
     return False
 
@@ -34,7 +44,7 @@ def getRawImageURL(relativePath):
     return "https://mars.nasa.gov/mer/gallery/all/" + relativePath
 
 
-def getImageURL(tagObject):
+def getImageURLFromTag(tagObject):
     """
     Return either the URL to the image or False
     """
@@ -47,47 +57,65 @@ def getImageURL(tagObject):
     return False
 
 
+solImageLinks = []
+galleryURL = f"https://mars.nasa.gov/mer/gallery/all/{roverName}.html"
+session = HTMLSession()
+
 if not os.path.exists(imageDir):
     os.mkdir(imageDir)
 
-with open("links.txt", "r") as f:
-    imgLinks = f.read().strip().split("\n")
+print("\nCollecting links to images from each sol")
 
-    # For testing the corrupted version overwriting (see comments below)
-    # imgLinks = ["https://mars.nasa.gov/mer/gallery/all/opportunity_f3644_text.html"]
+r = session.get(galleryURL)
 
-session = HTMLSession()
-for imgLink in imgLinks:
-    r = session.get(imgLink)
+# Get each URL that points to each sol photos were taken on
+for option in r.html.find("option"):
+    imageURL = option.attrs["value"]
+
+    if imageURL.startswith(f"{roverName}_{cameraPos}"):
+        imageURL = imageURL.replace(".html", "")
+        solImageLinks.append(
+            f"https://mars.nasa.gov/mer/gallery/all/{imageURL}_text.html"
+        )
+
+print(f"Found {len(solImageLinks)} sols containing images")
+print("\nDownloading individual images\n")
+
+for solImages in solImageLinks:
+    r = session.get(solImages)
 
     for anchorTag in r.html.find("a"):
-
-        currentURL = getImageURL(anchorTag)
+        currentURL = getImageURLFromTag(anchorTag)
         if not currentURL:
-            continue  # Skip this non-image URL
+            continue  # Skip non-image URLs
 
         filename = currentURL.split("/")[-1]
-        sol = currentURL.split("/")[2]
-        timestamp = filename[2:11]
-        newFilename = f"{sol}-{timestamp}"
 
-        # Sometimes there are multiple photos with the same {newFilename}, as there are
-        # multiple versions of some images, the latest version of which is better
-        # quality / less corrupted. Because the <a> tags are read in the correct order,
-        # the "best" version will be read last and will overwrite the previous
-        # version(s). This does however mean that bandwidth will be wasted downloading
-        # images to be immediatley be overwritten
+        if fromCorrectCamera(filename) and isFullFrame(filename):
 
-        # TODO: Instead of overwriting, look at all the filenames and check for
-        # duplicates with different / higher versions
+            sol = int(currentURL.split("/")[2])
+            timestamp = filename[2:11]
 
-        if fromOppLeftHZCM(filename) and isFullFrame(filename):
+            # :04d = always 4 digits (e.g. sol 0006)
+            newFilename = f"{sol:04d}-{timestamp}"
+
+            # Sometimes there are multiple photos with the same {newFilename}, as there
+            # are multiple versions of some images, the latest version of which is
+            # better quality / less corrupted. Because the <a> tags are read in the
+            # correct order, the "best" version will be read last and will overwrite the
+            # previous version(s). This does however mean that bandwidth will be wasted
+            # downloading images to be immediatley be overwritten
+
+            # For testing the corrupted version overwriting
+            # solImageLinks = ["https://mars.nasa.gov/mer/gallery/all/opportunity_f3644_text.html"]
+
+            # TODO: Instead of overwriting, look at all the filenames and check for
+            # duplicates with different / higher versions
+
             print(f"Found image from sol {newFilename}")
-
             rawImgURL = getRawImageURL(currentURL)
             rawImg = session.get(rawImgURL).content
 
             with open(f"{imageDir}/{newFilename}.jpg", "wb") as imageOut:
                 imageOut.write(rawImg)
-
             print(currentURL, "downloaded")

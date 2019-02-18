@@ -104,7 +104,6 @@ venv.bak/
 .mypy_cache/
 
 # Oppys Journey
-src/links.txt
 src/*.avi
 src/*/*.jpg
 *.ttf

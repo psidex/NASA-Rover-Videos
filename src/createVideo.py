@@ -6,11 +6,14 @@ from natsort import natsorted
 import cv2
 import os
 
+# Variables to change
 frameRate = 10
-imageDir = "oppyImagesText"
-videoName = f"journey-{frameRate}fps.avi"
+imageDir = "roverImagesWithText"
+# - - - - - - - - - -
 
+videoName = f"journey-{frameRate}fps.avi"
 imageNames = natsorted([img for img in os.listdir(imageDir) if img.endswith(".jpg")])
+
 frame = cv2.imread(os.path.join(imageDir, imageNames[0]))
 height, width, layers = frame.shape
 
