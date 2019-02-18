@@ -6,7 +6,7 @@ from natsort import natsorted
 import cv2
 import os
 
-frameRate = 15
+frameRate = 10
 imageDir = "oppyImagesText"
 videoName = f"journey-{frameRate}fps.avi"
 

@@ -36,4 +36,6 @@ I have also fixed a lot of the corrupted / lower quality images, which should ma
 
 You can see an example of one of the [corrupted images](https://mars.nasa.gov/mer/gallery/all/1/f/3644/1F451694215EFFCC3OP1225L0M1.JPG) compared to the [better version of the same image](https://mars.nasa.gov/mer/gallery/all/1/f/3644/1F451694215EFFCC3OP1225L0M2.JPG)
 
-[You can watch the improved video here]() (Coming Soon)
+The last change is that this new video is 10fps instead of 15fps, which essentially slows down the video and makes it easier to see what is happening
+
+[You can watch the updated video here](https://youtu.be/Eexd4eWUEfo)
