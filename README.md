@@ -25,3 +25,15 @@ Another similar video can be made for Spirits journey
 [You can see that video here](https://youtu.be/2BNyX0kwEcE)
 
 Read the description of each video for more info
+
+## Update
+
+After getting some reccomendations, I have added the sol & timestamp to the top left each frame
+
+To do this I wrote [addText.py](src/addText.py)
+
+I have also fixed a lot of the corrupted / lower quality images, which should make for a slightly smoother video
+
+You can see an example of one of the [corrupted images](https://mars.nasa.gov/mer/gallery/all/1/f/3644/1F451694215EFFCC3OP1225L0M1.JPG) compared to the [better version of the same image](https://mars.nasa.gov/mer/gallery/all/1/f/3644/1F451694215EFFCC3OP1225L0M2.JPG)
+
+[You can watch the improved video here]() (Coming Soon)

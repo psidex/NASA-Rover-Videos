@@ -9,6 +9,8 @@ Helper functions used info from https://mars.nasa.gov/mer/gallery/edr_filename_k
 from requests_html import HTMLSession
 import os
 
+imageDir = "oppyImages"
+
 
 def fromOppLeftHZCM(imageName):
     """
@@ -32,38 +34,60 @@ def getRawImageURL(relativePath):
     return "https://mars.nasa.gov/mer/gallery/all/" + relativePath
 
 
-if not os.path.exists("oppyImages"):
-    os.mkdir("oppyImages")
+def getImageURL(tagObject):
+    """
+    Return either the URL to the image or False
+    """
+    try:
+        imageURL = tagObject.attrs["href"]
+        if imageURL.endswith(".JPG"):
+            return imageURL
+    except KeyError:
+        pass
+    return False
+
+
+if not os.path.exists(imageDir):
+    os.mkdir(imageDir)
 
 with open("links.txt", "r") as f:
     imgLinks = f.read().strip().split("\n")
 
+    # For testing the corrupted version overwriting (see comments below)
+    # imgLinks = ["https://mars.nasa.gov/mer/gallery/all/opportunity_f3644_text.html"]
+
 session = HTMLSession()
 for imgLink in imgLinks:
     r = session.get(imgLink)
-    for anchor in r.html.find("a"):
-        try:
 
-            currentURL = anchor.attrs["href"]
-            if currentURL.endswith(".JPG"):
+    for anchorTag in r.html.find("a"):
 
-                filename = currentURL.split("/")[-1]
-                sol = currentURL.split("/")[2]
-                timestamp = filename[2:11]
-                newFilename = f"{sol}-{timestamp}"
+        currentURL = getImageURL(anchorTag)
+        if not currentURL:
+            continue  # Skip this non-image URL
 
-                if fromOppLeftHZCM(filename) and isFullFrame(filename):
+        filename = currentURL.split("/")[-1]
+        sol = currentURL.split("/")[2]
+        timestamp = filename[2:11]
+        newFilename = f"{sol}-{timestamp}"
 
-                    print(f"Found image from sol {newFilename}")
-                    if os.path.isfile(f"oppyImages/{newFilename}.jpg"):
-                        continue
+        # Sometimes there are multiple photos with the same {newFilename}, as there are
+        # multiple versions of some images, the latest version of which is better
+        # quality / less corrupted. Because the <a> tags are read in the correct order,
+        # the "best" version will be read last and will overwrite the previous
+        # version(s). This does however mean that bandwidth will be wasted downloading
+        # images to be immediatley be overwritten
 
-                    rawImgURL = getRawImageURL(currentURL)
-                    rawImg = session.get(rawImgURL).content
-                    print(currentURL, "downloaded")
+        # TODO: Instead of overwriting, look at all the filenames and check for
+        # duplicates with different / higher versions
 
-                    with open(f"oppyImages/{newFilename}.jpg", "wb") as imageOut:
-                        imageOut.write(rawImg)
+        if fromOppLeftHZCM(filename) and isFullFrame(filename):
+            print(f"Found image from sol {newFilename}")
 
-        except KeyError:
-            pass
+            rawImgURL = getRawImageURL(currentURL)
+            rawImg = session.get(rawImgURL).content
+
+            with open(f"{imageDir}/{newFilename}.jpg", "wb") as imageOut:
+                imageOut.write(rawImg)
+
+            print(currentURL, "downloaded")

@@ -1,6 +1,6 @@
 """
 Scrape NASAs Opportunity image page and get all the URLs for images from each Sol from
-the front HAZCAM
+the front HAZCAM, and saves these to links.txt
 """
 
 from requests_html import HTMLSession
