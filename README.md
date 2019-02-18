@@ -20,7 +20,7 @@ How I created "Opportunity's Journey" and various other videos
 
 I have improved most of the code, and moved it all into 3 files:
 - [downloadImages.py](src/downloadImages.py) - This will do steps 1-3, and can do it for Opportunity or Spirit, with either of the left/right front/rear Hazcams
-- [addText.py](src/addText.py) - This is a new script which will take each image and write in the top left the sol and [timestamp](https://mars.nasa.gov/mer/gallery/edr_filename_key.html) from the rover
+- [addText.py](src/addText.py) - This is a new script which will take each image and write in the top left the earth time, sol and [timestamp](https://mars.nasa.gov/mer/gallery/edr_filename_key.html) of when that image was taken by rover
 - [createVideo.py](src/createVideo.py) - This does what the name suggests, it takes all of the images and compiles them into one video
 
 Each script has variables that you can edit to change certain aspects of the final video

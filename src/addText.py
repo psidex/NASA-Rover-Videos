@@ -4,6 +4,7 @@ to the top left of the image and saves them to {newImageDir}
 """
 
 from PIL import Image, ImageFont, ImageDraw
+import datetime
 import os
 
 # Variables to change
@@ -11,8 +12,13 @@ imageDir = "roverImages"
 newImageDir = "roverImagesWithText"
 # - - - - - - - - - -
 
+# January 1, 2000 at 11:58:55.816 UTC.
+initialTimestamp = datetime.datetime(
+    year=2000, month=1, day=1, hour=11, minute=58, second=55, microsecond=816_000
+)
+
 imageNames = [img for img in os.listdir(imageDir) if img.endswith(".jpg")]
-# IMPORTANT: Need to have FiraCode-Regular.ttf downloaded and in this dir
+# IMPORTANT: Must have FiraCode-Regular.ttf either installed or downloaded in this dir
 font = ImageFont.truetype("FiraCode-Regular.ttf", 30)
 
 if not os.path.exists(newImageDir):
@@ -26,8 +32,13 @@ for imageName in imageNames:
     except OSError:
         continue  # File corrupted / unusable
 
+    sol, timestamp = imageName.replace(".jpg", "").split("-")
+
+    earthTime = initialTimestamp + datetime.timedelta(seconds=int(timestamp))
+    earthTimeFormatted = earthTime.strftime("%B %d %Y - %H:%M:%S")
+
     # Prepend "sol ", remove file extension, and add spaces to make it look better
-    imageText = "sol " + imageName.replace(".jpg", "").replace("-", " - ")
+    imageText = f"{earthTimeFormatted}\nsol {sol} - {timestamp}"
 
     draw = ImageDraw.Draw(img)
     draw.text((0, 0), imageText, (255, 255, 255), font=font)
