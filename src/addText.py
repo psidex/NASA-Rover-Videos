@@ -35,7 +35,9 @@ for imageName in imageNames:
     sol, timestamp = imageName.replace(".jpg", "").split("-")
 
     earthTime = initialTimestamp + datetime.timedelta(seconds=int(timestamp))
-    earthTimeFormatted = earthTime.strftime("%B %d %Y - %H:%M:%S")
+    earthTimeFormatted = earthTime.strftime("%B").ljust(9) + earthTime.strftime(
+        " %d %Y - %H:%M:%S"
+    )
 
     # Prepend "sol ", remove file extension, and add spaces to make it look better
     imageText = f"{earthTimeFormatted}\nsol {sol} - {timestamp}"
