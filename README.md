@@ -25,4 +25,4 @@ I have improved most of the code, and moved it all into 3 files:
 
 Each script has variables that you can edit to change certain aspects of the final video
 
-[You can watch the updated Opportunity's Journey video here](https://youtu.be/hWfcllqsEbg)
+[You can watch the updated Opportunity's Journey video here](https://youtu.be/yFXFMiCPqY4)
