@@ -11,7 +11,7 @@ frameRate = 10
 imageDir = "roverImagesWithText"
 # - - - - - - - - - -
 
-videoName = f"journey-{frameRate}fps.avi"
+videoName = f"journey_{frameRate}fps.avi"
 imageNames = natsorted([img for img in os.listdir(imageDir) if img.endswith(".jpg")])
 
 frame = cv2.imread(os.path.join(imageDir, imageNames[0]))

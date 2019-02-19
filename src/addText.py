@@ -32,7 +32,7 @@ for imageName in imageNames:
     except OSError:
         continue  # File corrupted / unusable
 
-    sol, timestamp = imageName.replace(".jpg", "").split("-")
+    sol, timestamp = imageName.replace(".jpg", "").split("_")
 
     earthTime = initialTimestamp + datetime.timedelta(seconds=int(timestamp))
     earthTimeFormatted = earthTime.strftime("%b %d %Y - %H:%M:%S")

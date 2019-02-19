@@ -97,7 +97,7 @@ for solImages in solImageLinks:
             timestamp = filename[2:11]
 
             # :04d = always 4 digits (e.g. sol 0006)
-            newFilename = f"{sol:04d}-{timestamp}"
+            newFilename = f"{sol:04d}_{timestamp}"
 
             # Sometimes there are multiple photos with the same {newFilename}, as there
             # are multiple versions of some images, the latest version of which is
